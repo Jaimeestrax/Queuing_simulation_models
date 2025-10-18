@@ -114,11 +114,6 @@ def calcular_tiempo_esperado_cola_no_vacia(lam, mu):
 Calculo de los costos por hora
 '''
 def calcular_costos_hora(lam, mu, cte = 0, cts = 0, ctse = 0, cs = 0):
-    # recibe los costos unitarios por parametro o sino los calcula
-
-    cte = calcular_tiempo_esperado_cola(lam, mu)  # costo unitario por tiempo en cola
-    cts = calcular_tiempo_esperado_sistema(lam, mu) # costo unitario por tiempo en el sistema
-
     # sumatoria de todos los costos por hora
     costo_total_por_hora = cte + cts + ctse + cs
 
@@ -143,7 +138,7 @@ def calcular_costos_diarios(lam, mu, cte, cts, ctse, cs, hora_laborable):
     ctte = lam * hora_laborable * wq * cte
     ctts = lam * hora_laborable * w * cts
     cttse = lam * hora_laborable * (1 / mu) * ctse
-    cts = cs * hora_laborable
+    ctservidor = cs * hora_laborable
     # sumatoria de todos los costos por hora
     costo_total_diario = ctte + ctts + cttse + cts
 
@@ -151,6 +146,6 @@ def calcular_costos_diarios(lam, mu, cte, cts, ctse, cs, hora_laborable):
         "costo_diario_tiempo_cola": ctte,
         "costo_diario_tiempo_sistema": ctts,
         "costo_diario_tiempo_servicio": cttse,
-        "costo_diario_servidor": cts,
+        "costo_diario_servidor": ctservidor,
         "costo_diario_total": costo_total_diario
     }
