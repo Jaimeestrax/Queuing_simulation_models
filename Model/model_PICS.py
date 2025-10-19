@@ -139,7 +139,7 @@ def calcular_costos_diarios(lam, mu, cte, cts, ctse, cs, hora_laborable):
     ctts = lam * hora_laborable * w * cts
     cttse = lam * hora_laborable * (1 / mu) * ctse
     ctservidor = cs * hora_laborable
-    # sumatoria de todos los costos por hora
+    # sumatoria de todos los costos por dia
     costo_total_diario = ctte + ctts + cttse + cts
 
     return {
