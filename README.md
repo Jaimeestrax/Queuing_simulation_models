@@ -12,23 +12,6 @@ Ideal para análisis de colas en servicios, manufactura, call centers, y más.
 ---
 
 ## 📁 Estructura del Proyecto
-Queuing_simulation_models/
-├── .gitignore
-├── README.md
-├── main.py
-├── controller/
-│   └── controller.py
-├── Model/
-│   ├── modelPFCM.py
-│   ├── modelPFCS.py
-│   ├── modelPICM.py
-│   └── modelPICS.py
-└── View/
-    ├── view_PFCM.py
-    ├── view_PFCS.py
-    ├── view_PICM.py
-    └── view_PICS.py
-
 
 - **Modelo**: Contiene la lógica matemática y fórmulas.
 - **Vista**: Maneja la interacción con el usuario y muestra resultados.
