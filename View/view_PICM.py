@@ -19,18 +19,18 @@ from Model.model_PICM import (
 # interfaz del menu a mostrarse
 def mostrar_menu_calculos():
     print("\n=== Cálculos disponibles para PICM (M/M/k) ===")
-    print("1. Utilización del sistema")
-    print("2. Probabilidad de sistema vacío")
-    print("3. Probabilidad de exactamente n clientes en el sistema")
-    print("4. Probabilidad de al menos k usuarios (Pk) → usuario espera")
-    print("5. Probabilidad de no esperar")
-    print("6. Número esperado de clientes en cola")
-    print("7. Número esperado de clientes en el sistema")
-    print("8. Número esperado en cola no vacía")
-    print("9. Tiempo esperado en cola")
-    print("10. Tiempo esperado en el sistema")
-    print("11. Tiempo esperado en cola no vacía")
-    print("12. Probabilidad acumulada (desde n hasta m)")
+    print("1. Utilización del sistema (p)")
+    print("2. Probabilidad de sistema vacío (p0)")
+    print("3. Probabilidad de exactamente n clientes en el sistema (Pn)")
+    print("4. Probabilidad acumulada (desde n hasta m clientes) (Pn)")
+    print("5. Probabilidad de al menos k usuarios (Pk) → usuario espera")
+    print("6. Probabilidad de no esperar (Pne)")
+    print("7. Número esperado de clientes en cola (L)")
+    print("8. Número esperado de clientes en el sistema (Lq)")
+    print("9. Número esperado en cola no vacía (Ln)")
+    print("10. Tiempo esperado en cola (W)")
+    print("11. Tiempo esperado en el sistema (Wq)")
+    print("12. Tiempo esperado en cola no vacía (Wn)")
     print("13. Calcular costos por hora")
     print("14. Calcular costos diarios")
     print("0. Volver al menú principal")
@@ -125,52 +125,20 @@ def mostrar_resultados_picm(params):
 
             elif opcion == 1:
                 p = calcular_utilizacion_sistema(lam, mu, k)
-                print(f"\nProbabilidad de que el sistema este ocupado: {p:.6f} - ({p * 100}%)")
+                print(f"\nProbabilidad de que el sistema este ocupado (p): {p:.6f} - ({p * 100}%)")
+                print(f"Utilización del sistema: {p:.6f} - ({p * 100}%)")
 
             elif opcion == 2:
                 p0 = calcular_probabilidad_sistema_vacio(lam, mu, k)
-                print(f"\nProbabilidad de hallar el sistema vacío: {p0:.6f} - ({p0 * 100}%)")
+                print(f"\nProbabilidad de hallar el sistema vacío (p0): {p0:.6f} - ({p0 * 100}%)")
                 print(f"Probabilidad de que todos los servidores esten desocupados a la vez: {p0:.6f} - ({p0 * 100}%)")
 
             elif opcion == 3:
                 n = solicitar_n()
                 pn = calcular_probabilidad_n_clientes(lam, mu, k, n)
-                print(f"\nProbabilidad de hallar exactamente {n} usuario(s) dentro del sistema: {pn:.6f}")
+                print(f"\nProbabilidad de hallar exactamente {n} usuario(s) dentro del sistema P({n}): {pn:.6f}")
 
             elif opcion == 4:
-                pk = calcular_probabilidad_k_clientes(lam, mu, k)
-                print(f"\nProbabilidad de que {k} usuario(s) que llega tenga que esperar: {pk:.6f}")
-                print(f"Probabilidad de que haya {k} o más usuarios en el sistema: {pk:.6f}")
-
-            elif opcion == 5:
-                p_ne = calcular_probabilidad_no_esperar(lam, mu, k)
-                print(f"\nProbabilidad de que un usuario que llega no tenga que esperar: {p_ne:.6f}")
-
-            elif opcion == 6:
-                lq = calcular_numero_esperado_clientes_cola(lam, mu, k)
-                print(f"\nNúmero esperado de clientes en cola: {lq:.2f}")
-
-            elif opcion == 7:
-                l = calcular_numero_esperado_clientes_sistema(lam, mu, k)
-                print(f"\nNúmero esperado de clientes en el sistema: {l:.2f}")
-
-            elif opcion == 8:
-                ln = calcular_numero_esperado_clientes_cola_no_vacia(lam, mu, k)
-                print(f"\nNúmero esperado de clientes en cola no vacía: {ln:.2f}")
-
-            elif opcion == 9:
-                wq = calcular_tiempo_esperado_cola(lam, mu, k)
-                print(f"\nTiempo esperado en cola: {wq:.2f} c/h")
-
-            elif opcion == 10:
-                w = calcular_tiempo_esperado_sistema(lam, mu, k)
-                print(f"\nTiempo esperado en el sistema: {w:.2f} c/h")
-
-            elif opcion == 11:
-                wn = calcular_tiempo_esperado_cola_no_vacia(lam, mu, k)
-                print(f"\nTiempo esperado en cola no vacía: {wn:.2f} c/h")
-
-            elif opcion == 12:
                 desde, hasta = solicitar_rango_n()
                 if hasta is None:
                     prob = calcular_probabilidad_acumulada(lam, mu, k, desde_n=desde)
@@ -178,13 +146,46 @@ def mostrar_resultados_picm(params):
                 else:
                     prob = calcular_probabilidad_acumulada(lam, mu, k, desde_n=desde, hasta_n=hasta)
                     print(f"\nProbabilidad de encontrar desde {desde} a {hasta} cliente(s) en el sistema: {prob:.6f}")
+            
+            elif opcion == 5:
+                pk = calcular_probabilidad_k_clientes(lam, mu, k)
+                print(f"\nProbabilidad de que {k} usuario(s) que llega tenga que esperar (Pk): {pk:.6f}")
+                print(f"Probabilidad de que haya {k} o más usuarios en el sistema: {pk:.6f}")
+
+            elif opcion == 6:
+                p_ne = calcular_probabilidad_no_esperar(lam, mu, k)
+                print(f"\nProbabilidad de que un usuario que llega no tenga que esperar (Pne): {p_ne:.6f}")
+
+            elif opcion == 7:
+                lq = calcular_numero_esperado_clientes_cola(lam, mu, k)
+                print(f"\nNúmero esperado de clientes en cola (lq): {lq:.2f}")
+
+            elif opcion == 8:
+                l = calcular_numero_esperado_clientes_sistema(lam, mu, k)
+                print(f"\nNúmero esperado de clientes en el sistema (l): {l:.2f}")
+
+            elif opcion == 9:
+                ln = calcular_numero_esperado_clientes_cola_no_vacia(lam, mu, k)
+                print(f"\nNúmero esperado de clientes en cola no vacía (ln): {ln:.2f}")
+
+            elif opcion == 10:
+                wq = calcular_tiempo_esperado_cola(lam, mu, k)
+                print(f"\nTiempo esperado en cola (wq): {wq:.2f} h/c")
+
+            elif opcion == 11:
+                w = calcular_tiempo_esperado_sistema(lam, mu, k)
+                print(f"\nTiempo esperado en el sistema (wc): {w:.2f} h/c")
+
+            elif opcion == 12:
+                wn = calcular_tiempo_esperado_cola_no_vacia(lam, mu, k)
+                print(f"\nTiempo esperado en cola no vacía (wn): {wn:.2f} h/c")
 
             elif opcion == 13:
                 cte, cts, ctse, cs = solicitar_costos()
                 costos = calcular_costos_hora(lam, mu, cte, cts, ctse, cs)
                 print("\n=== Costos por hora ===")
                 for clave, valor in costos.items():
-                    print(f"{clave.replace('_', ' ').title()}: ${valor:.4f}")
+                    print(f"{clave.replace('_', ' ').title()}: ${valor:.4f}/h")
 
             elif opcion == 14:
                 cte, cts, ctse, cs = solicitar_costos()
@@ -192,7 +193,7 @@ def mostrar_resultados_picm(params):
                 costos_diarios = calcular_costos_diarios(lam, mu, k, cte, cts, ctse, cs, horas)
                 print("\n=== Costos diarios ===")
                 for clave, valor in costos_diarios.items():
-                    print(f"{clave.replace('_', ' ').title()}: ${valor:.4f}")
+                    print(f"{clave.replace('_', ' ').title()}: ${valor:.4f}/d")
 
         except ValueError as e:
             print(f"\nSe ha presentado un error en el menú: {e}")

@@ -142,3 +142,43 @@ def calcular_tiempo_esperado_cola_no_vacia(lam, mu, M):
         raise ValueError("PE es 0 y no se puede dividir por cero")
     wn = wq / pE
     return wn
+
+'''11.
+Calcula costos por hora
+'''
+def calcular_costos_hora(lam, mu, M, cte=0, cts=0, ctse=0, cs=0):
+
+    Lq = calcular_numero_esperado_clientes_cola(lam, mu, M)
+    L = calcular_numero_esperado_clientes_sistema(lam, mu, M)
+    Ls = L - Lq  # Clientes en servicio
+
+    costo_cola = cte * Lq
+    costo_sistema = cts * L
+    costo_servicio = ctse * Ls
+    costo_servidor = cs  # Solo un servidor
+
+    costo_total = costo_cola + costo_sistema + costo_servicio + costo_servidor
+
+    return {
+        "costo_tiempo_cola": costo_cola,
+        "costo_tiempo_sistema": costo_sistema,
+        "costo_tiempo_servicio": costo_servicio,
+        "costo_servidor": costo_servidor,
+        "costo_total_por_hora": costo_total
+    }
+
+'''12.
+Calcula costos diarios
+'''
+def calcular_costos_diarios(lam, mu, M, cte, cts, ctse, cs, horas_laborables):
+
+    costos_hora = calcular_costos_hora(lam, mu, M, cte, cts, ctse, cs)
+    costo_total_diario = costos_hora["costo_total_por_hora"] * horas_laborables
+
+    return {
+        "costo_diario_tiempo_cola": costos_hora["costo_tiempo_cola"] * horas_laborables,
+        "costo_diario_tiempo_sistema": costos_hora["costo_tiempo_sistema"] * horas_laborables,
+        "costo_diario_tiempo_servicio": costos_hora["costo_tiempo_servicio"] * horas_laborables,
+        "costo_diario_servidor": costos_hora["costo_servidor"] * horas_laborables,
+        "costo_diario_total": costo_total_diario
+    }

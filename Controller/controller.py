@@ -46,7 +46,7 @@ def obtener_parametros_picm():
     k = int(input("Ingrese el número de servidores (k): "))
     if lam <= 0 or mu <= 0 or k <= 0:
         raise ValueError("Todos los parámetros deben ser positivos")
-    if lam >= c * mu:
+    if lam >= k * mu:
         print("Advertencia: El sistema no cumple con la condición de estabilidad")
     
     return {"lam": lam, "mu": mu, "k": k}
@@ -56,7 +56,7 @@ def obtener_parametros_pfcs():
 
     lam = float(input("Ingrese la tasa de llegada (lambda): "))
     mu = float(input("Ingrese la tasa de servicio (mu): "))
-    K = int(input("Ingrese la capacidad máxima del sistema (M): "))
+    M = int(input("Ingrese la capacidad máxima del sistema (M): "))
     if lam <= 0 or mu <= 0 or M <= 0:
         raise ValueError("Todos los parámetros deben ser positivos")
     

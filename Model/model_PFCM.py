@@ -184,3 +184,43 @@ def calcular_probabilidad_acumulada(lam, mu, k, M, desde_n=0, hasta_n=None):
         for n in range(0, desde_n):
             acumulado_hasta_desde_n_menos_1 += calcular_probabilidad_n_clientes(lam, mu, k, M, n)
         return 1 - acumulado_hasta_desde_n_menos_1
+
+'''12.
+Calcula costos por hora 
+'''
+def calcular_costos_hora(lam, mu, k, M, cte=0, cts=0, ctse=0, cs=0):
+
+    Lq = calcular_numero_esperado_clientes_cola(lam, mu, k, M)
+    L = calcular_numero_esperado_clientes_sistema(lam, mu, k, M)
+    Ls = L - Lq  # Clientes en servicio
+
+    costo_cola = cte * Lq
+    costo_sistema = cts * L
+    costo_servicio = ctse * Ls
+    costo_servidor = cs * k  # k servidores
+
+    costo_total = costo_cola + costo_sistema + costo_servicio + costo_servidor
+
+    return {
+        "costo_tiempo_cola": costo_cola,
+        "costo_tiempo_sistema": costo_sistema,
+        "costo_tiempo_servicio": costo_servicio,
+        "costo_servidor": costo_servidor,
+        "costo_total_por_hora": costo_total
+    }
+
+'''13.
+Calcula costos por dia
+'''
+def calcular_costos_diarios(lam, mu, k, M, cte, cts, ctse, cs, horas_laborables):
+
+    costos_hora = calcular_costos_hora(lam, mu, k, M, cte, cts, ctse, cs)
+    costo_total_diario = costos_hora["costo_total_por_hora"] * horas_laborables
+
+    return {
+        "costo_diario_tiempo_cola": costos_hora["costo_tiempo_cola"] * horas_laborables,
+        "costo_diario_tiempo_sistema": costos_hora["costo_tiempo_sistema"] * horas_laborables,
+        "costo_diario_tiempo_servicio": costos_hora["costo_tiempo_servicio"] * horas_laborables,
+        "costo_diario_servidor": costos_hora["costo_servidor"] * horas_laborables,
+        "costo_diario_total": costo_total_diario
+    }

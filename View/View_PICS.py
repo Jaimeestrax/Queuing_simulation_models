@@ -17,16 +17,16 @@ from Model.model_PICS import (
 # interfaz del menu a mostrarse
 def mostrar_menu_calculos():
     print("\n=========== Cálculos disponibles para el modelo PICS ========")
-    print("1. Probabilidad de hallar el sistema ocupado")
-    print("2. Probabilidad de hallar el sistema vacio")
-    print("3. Probabilidad de hallar exactamente n clientes en el sistema")
-    print("4. Probabilidad de hallar desde n hasta m clientes")
-    print("5. Número esperado de clientes en el sistema")
-    print("6. Número esperado de clientes en cola")
-    print("7. Número esperado de clientes en cola no vacía")
-    print("8. Tiempo esperado en el sistema")
-    print("9. Tiempo esperado en cola")
-    print("10. Tiempo esperado en cola no vacía")
+    print("1. Probabilidad de hallar el sistema ocupado (p)")
+    print("2. Probabilidad de hallar el sistema vacio (p0)")
+    print("3. Probabilidad de hallar exactamente n clientes en el sistema (Pn)")
+    print("4. Probabilidad de hallar desde n hasta m clientes (Pn)")
+    print("5. Número esperado de clientes en el sistema (L)")
+    print("6. Número esperado de clientes en cola (Lq)")
+    print("7. Número esperado de clientes en cola no vacía (Ln)")
+    print("8. Tiempo esperado en el sistema (W)")
+    print("9. Tiempo esperado en cola (Wq)")
+    print("10. Tiempo esperado en cola no vacía (Wn)")
     print("11. Calcular costos por hora")
     print("12. Calcular costos diarios")
     print("0. Volver al menú principal")
@@ -124,61 +124,62 @@ def mostrar_resultados_pics(params):
             elif opcion == 1:
                 p = calcular_utilizacion_sistema(lam, mu)
                 # interpretaciones de la probabilidad encontrada
-                print(f"\nProbabilidad de que el sistema este ocupado: {p:.6f} - ({p * 100}%)")
-                print(f"Probabilidad que tienen los usuarios de ser atendidos: {p:.6f} - ({p * 100}%)")
+                print(f"\nProbabilidad de que el sistema este ocupado (p): {p:.6f} - ({p * 100}%)")
+                print(f"Probabilidad que tienen los usuarios de esperar para ser atendidos: {p:.6f} - ({p * 100}%)")
+                print(f"Utilización del sistema: {p:.6f} - ({p * 100}%)")
 
             elif opcion == 2:
                 p0 = calcular_probabilidad_sistema_vacio(lam, mu)
                 # interpretaciones de la probabilidad encontrada
-                print(f"\nProbabilidad de hallar el sistema vacio u ocioso: {p0:.6f} - ({p0 * 100}%)")
+                print(f"\nProbabilidad de hallar el sistema vacio u ocioso (p0): {p0:.6f} - ({p0 * 100}%)")
                 print(f"Probabilidad que tienen los usuarios de no esperar: {p0:.6f} - ({p0 * 100}%)")
                 print(f"Probabilidad que tiene los usuarios de ser atendidos sin esperar en cola: {p0:.6f} - ({p0 * 100}%)")
 
             elif opcion == 3:
                 n = solicitar_n()
                 pn = calcular_probabilidad_n_clientes(lam, mu, n)
-                print(f"\nProbabilidad de encontrar {n} usuario(s) en el sistema: {pn:.6f}")
+                print(f"\nProbabilidad de encontrar {n} usuario(s) en el sistema (p{n}): {pn:.6f}")
 
             elif opcion == 4:
                 desde, hasta = solicitar_rango_n()
                 # interpretaciones de la probabilidad encontrada
                 if hasta is None:
                     prob = calcular_probabilidad_acumulada(lam, mu, desde_n=desde)
-                    print(f"\nProbabilidad de encontrar al menos {desde} usuario(s) en el sistema: {prob:.6f}")
+                    print(f"\nProbabilidad de encontrar al menos {desde} usuario(s) en el sistema (P): {prob:.6f}")
                 else:
                     prob = calcular_probabilidad_acumulada(lam, mu, desde_n=desde, hasta_n=hasta)
-                    print(f"\nProbabilidad de encontrar desde {desde} a {hasta} usuario(s) en el sistema: {prob:.6f}")
+                    print(f"\nProbabilidad de encontrar desde {desde} a {hasta} usuario(s) en el sistema (P): {prob:.6f}")
 
             elif opcion == 5:
                 l = calcular_numero_esperado_clientes_sistema(lam, mu)
-                print(f"\nNúmero esperado de clientes en el sistema (promedio clientes): {l:.2f} clientes")
+                print(f"\nNúmero esperado de clientes en el sistema (promedio clientes - l): {l:.2f} clientes")
 
             elif opcion == 6:
                 lq = calcular_numero_esperado_clientes_cola(lam, mu)
-                print(f"\nNúmero esperado de clientes en cola (promedio clientes en cola): {lq:.2f} clientes")
+                print(f"\nNúmero esperado de clientes en cola (promedio clientes en cola - lq): {lq:.2f} clientes")
 
             elif opcion == 7:
                 ln = calcular_numero_esperado_clientes_cola_no_vacia(lam, mu)
-                print(f"\nNúmero esperado de clientes en cola no vacía (solo cuando habia cola): {ln:.2f} clientes")
+                print(f"\nNúmero esperado de clientes en cola no vacía (solo cuando habia cola - ln): {ln:.2f} clientes")
 
             elif opcion == 8:
                 w = calcular_tiempo_esperado_sistema(lam, mu)
-                print(f"\nTiempo esperado en el sistema: {w:.2f} c/h")
+                print(f"\nTiempo esperado en el sistema (w): {w:.2f} h/c")
 
             elif opcion == 9:
                 wq = calcular_tiempo_esperado_cola(lam, mu)
-                print(f"\nTiempo esperado en cola: {wq:.2f} c/h")
+                print(f"\nTiempo esperado en cola (wq): {wq:.2f} h/c")
 
             elif opcion == 10:
                 wn = calcular_tiempo_esperado_cola_no_vacia(lam, mu)
-                print(f"\nTiempo esperado en cola no vacía: {wn:.2f} c/h")
+                print(f"\nTiempo esperado en cola no vacía (wn): {wn:.2f} h/c")
 
             elif opcion == 11:
                 cte, cts, ctse, cs = solicitar_costos()
                 costos = calcular_costos_hora(lam, mu, cte, cts, ctse, cs)
                 print("\n=== Costos por hora ===")
                 for clave, valor in costos.items():
-                    print(f"{clave.replace('_', ' ').title()}: ${valor:.4f}")
+                    print(f"{clave.replace('_', ' ').title()}: ${valor:.4f}/h")
 
             elif opcion == 12:
                 cte, cts, ctse, cs = solicitar_costos()
@@ -186,7 +187,7 @@ def mostrar_resultados_pics(params):
                 costos_diarios = calcular_costos_diarios(lam, mu, cte, cts, ctse, cs, horas)
                 print("\n=== Costos diarios ===")
                 for clave, valor in costos_diarios.items():
-                    print(f"{clave.replace('_', ' ').title()}: ${valor:.4f}")
+                    print(f"{clave.replace('_', ' ').title()}: ${valor:.4f}/d")
 
         except ValueError as e:
             print(f"\nSe ha presentado un error en el menú: {e}")
